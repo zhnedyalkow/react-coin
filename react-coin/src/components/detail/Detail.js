@@ -15,10 +15,28 @@ class Detail extends React.Component {
         };
     }
     componentDidMount() {
+        // 'Component has been mounted'
+
         const currencyId = this.props.match.params.id;
 
         this.setState({ loading: true });
+        this.fetchCurrency(currencyId);
 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // 'Component has been updated'
+
+        if (this.props.location.pathname !== nextProps.location.pathname) {
+
+            // Get new currency id from url
+            const newCurrencyId = nextProps.match.params.id;
+
+            this.fetchCurrency(newCurrencyId);
+        }
+    }
+
+    fetchCurrency(currencyId) {
         fetch(`${API_URL}/cryptocurrencies/${currencyId}`)
             .then(handleResponse)
             .then((currency) => {
@@ -69,16 +87,16 @@ class Detail extends React.Component {
                         24H Change <span className="Detail-value">{renderChangePercent(currency.percentChange24h)}</span>
                     </div>
                     <div className="Detail-item">
-                         <span className="Detail-title">Market cap</span>
-                         <span className="Detail-dollar">$</span> {currency.marketCap}
+                        <span className="Detail-title">Market cap</span>
+                        <span className="Detail-dollar">$</span> {currency.marketCap}
                     </div>
                     <div className="Detail-item">
-                         <span className="Detail-title">24H Volume</span>
-                         <span className="Detail-dollar">$</span> {currency.volume24h}
+                        <span className="Detail-title">24H Volume</span>
+                        <span className="Detail-dollar">$</span> {currency.volume24h}
                     </div>
                     <div className="Detail-item">
-                         <span className="Detail-title">Total supply</span>
-                         <span className="Detail-dollar"></span> {currency.totalSupply}
+                        <span className="Detail-title">Total supply</span>
+                        <span className="Detail-dollar"></span> {currency.totalSupply}
                     </div>
                 </div>
             </div>
